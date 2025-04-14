@@ -1,0 +1,6 @@
+*.bin
+*.Bin
+.idea/*
+venv/*
+*.A2L
+*.A2l
