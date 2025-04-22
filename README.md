@@ -1,14 +1,16 @@
 # A2L-Convert
 
-A command-line toolkit for working with A2L files for ECU tuning. This toolkit helps in preparing A2L files for further processing, creates a database representation of the A2L data, and can export the data to JSON format.
+A command-line toolkit for working with A2L files for ECU tuning. This toolkit helps in preparing A2L files for further processing, creates a database representation of the A2L data, exports the data to JSON format, and can generate C header files for direct memory access.
 
 ## Features
 
 - Preprocesses A2L files to ensure compatibility
 - Creates a database representation of the A2L data
 - Exports A2L data to JSON format for easier processing
+- Generates C header files with memory address definitions
 - Command-line interface for easy integration into workflows
 - Supports custom output file naming
+- Includes header guards and proper C types based on variable sizes
 
 ## Requirements
 
@@ -60,6 +62,27 @@ To specify a custom output file:
 python export-json.py input_file.a2l -o output_file.json
 ```
 
+### Converting JSON to C Header
+
+Basic usage:
+```bash
+python json_to_c-header.py input_file.json
+```
+
+This will create a C header file with the same name as the input file but with a `.h` extension.
+
+To specify a custom output file:
+```bash
+python json_to_c-header.py input_file.json -o output_file.h
+```
+
+The generated header file includes:
+- Header guards
+- Proper C types based on variable sizes (uint8_t, uint16_t, etc.)
+- Memory address definitions with volatile pointers
+- Bit mask support for bitfield access
+- Original variable descriptions as comments
+
 ### Command-line Options
 
 For import-a2l.py:
@@ -70,6 +93,11 @@ For import-a2l.py:
 For export-json.py:
 - `input_file`: Path to the preprocessed A2L file (required)
 - `-o, --output`: Path to the output JSON file (optional)
+- `-h, --help`: Show help message and exit
+
+For json_to_c-header.py:
+- `input_file`: Path to the input JSON file (required)
+- `-o, --output`: Path to the output header file (optional)
 - `-h, --help`: Show help message and exit
 
 ## Typical Workflow
@@ -84,13 +112,20 @@ python import-a2l.py your_file.a2l
 python export-json.py your_file_preprocessed.a2l
 ```
 
+3. Finally, generate the C header file:
+```bash
+python json_to_c-header.py your_file.json
+```
+
 ## Error Handling
 
-Both tools include error handling for common issues:
+All tools include error handling for common issues:
 - Missing input files
 - Processing errors
 - File access problems
 - Database errors
+- JSON parsing errors
+- Invalid data types or sizes
 
 Error messages will be displayed in the console with appropriate exit codes.
 
