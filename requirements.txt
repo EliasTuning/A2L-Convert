@@ -1,2 +1,2 @@
-pya2ldb
-chardet
+pya2l>=2.3.0
+chardet>=4.0.0
